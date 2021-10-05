@@ -1,0 +1,181 @@
+{% extends 'pswms/SuperAdmin/AdminMaster.html' %}
+
+
+    {% block content %}
+     <form action="{% url 'pswms:member_complaint' %}" method="POST"  id="regform" data-ward-list="{% url 'pswms:get_ward' %}"> 
+      {% csrf_token %}
+      <div class="not-div font-lg">
+      <table class="tb font-md">
+        <tr>
+          <td>
+            Select Panchayath
+          </td>
+          <td><select name="panchayath" id="pan" class="form-control" style="width: 200px;" required>
+            <option disabled=true selected=true>------------</option>
+             {% for panchayath in panchayath_list %}
+             <option value={{panchayath.pan_id}}>{{panchayath.pan_name|capfirst}}</option>
+             {% endfor %}
+         </select></td>
+        </tr>
+        <tr>
+         
+          <td> Select Ward</td>
+        <td><select name="ward" id="ward"  class="form-control" required>
+                
+            </select></td>
+        </tr>
+
+        
+       
+        <tr>
+          <td>
+          
+          </td>
+          <td><input type="submit" value="Search" class="btn btn-primary"/></td>
+        </tr>
+      </table>
+    </div>
+    {% if complaints %}
+
+    <table class="table table-striped" style="margin-left: 80px;">
+      <thead>
+        <tr> 
+              
+              <th scope="col" class="table-danger">User Name</th>
+              <th scope="col" class="table-danger">Panchayath</th>
+              <th scope="col" class="table-danger">Ward</th>
+              <th scope="col" class="table-danger">Date</th>
+              <th scope="col" class="table-danger">Complaint</th>
+              <th scope="col" class="table-danger">Reply</th>
+              <!-- <th scope="col" class="table-danger">Action</th> -->
+              <!-- <th scope="col">Gender</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone No</th>
+              <th scope="col">Panchayath</th>
+              <th scope="col">Ward No</th> -->
+             
+            </tr>
+          </thead>
+          <tbody>
+              {% for complaint in complaints %}
+           <tr>
+              
+              
+             
+           
+             <td>{{complaint.user_id.user_name|capfirst}}</td>
+             <td>{{complaint.user_id.user_pan.pan_name|capfirst}}</td>
+             <td>{{complaint.user_id.user_ward.ward_no}}</td>
+             <td>{{complaint.complaint_date}}</td>
+             <td>{{complaint.user_complaint|capfirst}}</td>
+              <td>{{complaint.reply|capfirst}}</td> 
+          
+             <!-- <td>{{complaint.p_email}}</td>
+             <td>{{member.p_phno}}</td>
+             <td>{{member.pan_id.pan_name|capfirst}}</td>
+             <td>{{member.ward_no}}</td> -->
+             
+             
+          <!-- <td>
+          <a href="/pswms/SuperHome/ReplyUser?user={{complaint.user_id.user_id}}&date={{complaint.date|date:'Y-m-d'}}" style="color:green;">Reply </a>
+            </td> -->
+         
+        </tr>
+        {% endfor %}
+
+      </table>
+      {% else %}
+      <p >
+        <h2 class="tb not-div"  style="color: red; margin-top: 40px;">No Data Available</h2>
+      </p>
+      {% endif %}
+    </div>
+     
+      <nav aria-label="Page navigation example" class="nav-p">
+        <ul class="pagination">
+            <li class="page-item">
+                {% if member_list.has_previous %}
+                <a class="page-link" href="?page=waste_list.previous_page_number"
+                    aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                {% endif %}
+            </li>
+            {% for p in member_list.paginator.page_range %}
+            <li class="page-item "><a class="page-link" href="?page={{p}}">{{p}}</a></li>
+            {% endfor %}
+            <!-- <li class="page-item "> Page {{p}} of {{panchayath_list.paginator.page}}</li> -->
+            <li class="page-item">
+                {% if member_list.has_next %}
+                <a class="page-link" href="?page={{member_list.next_page_number}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
+
+
+
+
+
+<script>
+  $(document).ready(function () {
+      $("input").focus(function () {
+
+          document.getElementById('msg').innerHTML = "";
+
+
+      }
+
+
+
+
+
+
+
+
+
+      );
+
+      $("#pan").change(function () {
+
+          const url = $("#regform").attr("data-ward-list");
+
+          const panId = $(this).val();
+
+
+          $.ajax({                       // initialize an AJAX request
+              url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+              data: {
+                  'pan_id': panId       // add the country id to the GET parameters
+              },
+              success: function (data) {   // `data` is the return of the `load_cities` view function
+                  $("#ward").html(data);
+
+                  console.log("*******************")
+                  // replace the contents of the city input with the data that came from the server
+                  /*
+     
+                  let html_data = '<option value="">---------</option>';
+                  data.forEach(function (city) {
+                      html_data += `<option value="${city.id}">${city.name}</option>`
+                  });
+                  console.log(html_data);
+                  $("#id_city").html(html_data);
+     
+                  */
+              }
+          });
+
+
+
+
+      });
+
+  });
+</script>
+      {% endblock %}

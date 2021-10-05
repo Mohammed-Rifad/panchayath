@@ -1,0 +1,176 @@
+{% extends 'pswms/SuperAdmin/AdminMaster.html' %}
+
+
+{% block content %}
+{{yr}}
+<div class="col-md-12" style="margin-top: 50px; margin-left: 240px;">
+    <div><h2 style="font-family: Arial, Helvetica, sans-serif;"> <u>Panchayath Member</u> </h2></div>
+    
+    </div>
+<form action="{% url 'pswms:add_member' %}" method="POST" enctype="multipart/form-data" id="regform"
+    data-ward-list="{% url 'pswms:get_ward' %}">
+   
+    {% csrf_token %}
+    <table style="margin-top: 20px; margin-left: 140px; border-collapse: separate; border-spacing: 15px;">
+        <tr>
+            <td></td>
+            <td> 
+                {% if form.errors %}
+                {% for field in form %}
+                {% for error in field.errors %}
+                <div class="alert alert-danger" id="form-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger" id="form-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% if success_msg %}
+                <p class="alert alert-success alt" id="msg">{{success_msg}}</p>
+                {% endif %}
+                {% if error_msg %}
+                <p class="alert alert-danger alt" id="msg">{{error_msg}}</p>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>{{form.p_name.label}}</td>
+            <td>{{form.p_name}}</td>
+        </tr>
+        <tr>
+            <td>{{form.p_address.label}}</td>
+            <td>{{form.p_address}}</td>
+        </tr>
+        <tr>
+            <td>{{form.p_dob.label}}</td>
+            <td>{{form.p_dob}}</td>
+        </tr>
+        <tr>
+            <td>{{form.p_gender.label}}</td>
+            <td>{{form.p_gender}}</td>
+        </tr>
+        <tr>
+            <td>{{form.p_email.label}}</td>
+            <td>{{form.p_email}}</td>
+        </tr>
+        <tr>
+            <td>Select Year</td>
+            <td><select name="yr_frm">
+                {% for y in yr_frm %}
+                <option  value="{{y}}">{{y}}</option> 
+                {% endfor %}
+            </select> &nbsp;&nbsp;<span>To</span> 
+            <select name="yr_to">
+                {% for y in yr_to %}
+                <option  value="{{y}}">{{y}}</option> 
+                {% endfor %}
+            </select>   
+        </tr>
+        <tr>
+            <td>{{form.p_phno.label}}</td>
+            <td>{{form.p_phno}}</td>
+        </tr>
+        <tr>
+            <td>{{form.p_img.label}}</td>
+            <td>{{form.p_img}}</td>
+        </tr>
+        <tr>
+            <td>Select Panchayath</td>
+            <td> <select name="panchayath" id="pan" style="height: 30px; width: 180px;" required>
+                   <option disabled=true selected=true>------------</option>
+                    {% for panchayath in panchayath_list %}
+                    <option value={{panchayath.pan_id}}>{{panchayath.pan_name|capfirst}}</option>
+                    {% endfor %}
+                </select></td>
+        </tr>
+        <td> Select Ward</td>
+        <td><select name="ward" id="ward" style="height: 30px; width: 180px;" required>
+                <option disabled=true selected=true>------------</option>
+            </select></td>
+        </tr>
+        <tr>
+            <td align="right" ><input type="submit" value="Register" class="btn btn-primary" /></td>
+           
+        </tr>
+    </table>
+
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            var form_err=document.getElementById('form-error')?document.getElementById('form-error').innerHTML:null;
+        var msg=document.getElementById('msg')?document.getElementById('msg').innerHTML:null;
+            $("input").focus(function () {
+                if(msg!=null)
+            {
+                
+                document.getElementById('msg').setAttribute("style", "display:none");
+            document.getElementById('msg').innerHTML = "";
+        }
+        if(form_err!=null)
+        {
+            document.getElementById('form-error').setAttribute("style", "display:none");
+        }
+        // if(form_err==null){
+        //         document.getElementById('form-error').setAttribute("style", "display:none");
+        //     }
+               
+
+
+            }
+
+
+
+
+
+
+
+
+
+            );
+
+            $("#pan").change(function () {
+
+                const url = $("#regform").attr("data-ward-list");
+
+                const panId = $(this).val();
+
+
+                $.ajax({                       // initialize an AJAX request
+                    url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+                    data: {
+                        'pan_id': panId       // add the country id to the GET parameters
+                    },
+                    success: function (data) {   // `data` is the return of the `load_cities` view function
+                        $("#ward").html(data);
+
+                        console.log("*******************")
+                        // replace the contents of the city input with the data that came from the server
+                        /*
+           
+                        let html_data = '<option value="">---------</option>';
+                        data.forEach(function (city) {
+                            html_data += `<option value="${city.id}">${city.name}</option>`
+                        });
+                        console.log(html_data);
+                        $("#id_city").html(html_data);
+           
+                        */
+                    }
+                });
+
+
+
+
+            });
+
+        });
+    </script>
+    {% endblock %}
+</form>

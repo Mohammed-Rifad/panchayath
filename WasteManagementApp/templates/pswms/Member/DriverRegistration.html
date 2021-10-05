@@ -1,0 +1,127 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+{% block content %}
+
+<form action="{% url 'pswms:add_driver' %}" method="POST" enctype="multipart/form-data" id="regform"
+    data-ward-list="{% url 'pswms:get_ward' %}">
+    {% csrf_token %}
+    {% if form.errors %}
+    {% for field in form %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <table style="margin-top: 20px; margin-left: 140px; border-collapse: separate; border-spacing: 15px;">
+        <tr>
+            <td>{{form.driver_name.label}}</td>
+            <td>{{form.driver_name}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_address.label}}</td>
+            <td>{{form.driver_address}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_dob.label}}</td>
+            <td>{{form.driver_dob}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_gender.label}}</td>
+            <td>{{form.driver_gender}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_email.label}}</td>
+            <td>{{form.driver_email}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_phno.label}}</td>
+            <td>{{form.driver_phno}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_img.label}}</td>
+            <td>{{form.driver_img}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_vehicle.label}}</td>
+            <td>{{form.driver_vehicle}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_qualification.label}}</td>
+            <td>{{form.driver_qualification}}</td>
+        </tr>
+        <tr>
+            <td>{{form.driver_language.label}}</td>
+            <td>{{form.driver_language}}</td>
+        </tr>
+        <tr>
+            <td align="right" ><input type="submit" value="Register" class="btn btn-primary" /></td>
+            <td >{% if success_msg %}
+                <p style="color: green; " id="msg">{{success_msg}}</p>
+
+                {% else %}
+                <p style="color: red;" id="msg">{{error_msg}}</p>
+                {% endif %}
+
+            </td>
+        </tr>
+    </table>
+
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $("input").focus(function () {
+
+                document.getElementById('msg').innerHTML = "";
+
+
+            }
+
+
+
+
+
+
+
+
+
+            );
+
+            $("#pan").change(function () {
+
+                const url = $("#regform").attr("data-ward-list");
+
+                const panId = $(this).val();
+
+
+                $.ajax({                       // initialize an AJAX request
+                    url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+                    data: {
+                        'pan_id': panId       // add the country id to the GET parameters
+                    },
+                    success: function (data) {   // `data` is the return of the `load_cities` view function
+                        $("#ward").html(data);
+                       
+                    }
+                });
+
+
+
+
+            });
+
+        });
+    </script>
+    {% endblock %}
+</form>

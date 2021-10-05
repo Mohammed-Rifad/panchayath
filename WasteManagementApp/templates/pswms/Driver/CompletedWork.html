@@ -1,0 +1,44 @@
+{% extends 'pswms/Driver/DriverMaster.html' %}
+
+
+{% block content %}
+<div class="col-md-10" style="margin-top: 30px; margin-left: 140px;">
+    <div><h2 style="font-family: Arial, Helvetica, sans-serif;"> Completed Work Details </h2></div>
+    </div>
+
+<table class="table-striped table" style="margin-left: 20px;margin-top: 40px; border-spacing: 60px;">
+    <tr>
+        <td class="table-danger">
+            <b>Sl.no</b>
+        </td>
+        <td  class="table-danger">
+            <b>Name</b> 
+        </td>
+        <td  class="table-danger">
+            <b>Date</b>
+        </td>
+        <td  class="table-danger">
+           <b>Status</b>
+        </td>
+    </tr>
+    {% for work in works %}
+    
+    <tr>
+        <td>{{forloop.counter}}</td>
+<td>{{work.user_id.user_name}}</td>
+<td>{{work.date}}</td>
+<td>{{work.status}}</td>
+<td><td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<!-- <ul>
+    {% for i in pickup_request %}
+    <li>{{i.user_id.user_name}}</li>
+    <li>{{i.date}}</li>
+    {% endfor %}
+</ul> -->
+
+{% endblock %}

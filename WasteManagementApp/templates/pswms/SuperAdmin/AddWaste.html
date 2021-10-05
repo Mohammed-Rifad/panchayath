@@ -1,0 +1,143 @@
+{% extends 'pswms/SuperAdmin/AdminMaster.html' %}
+
+{% block content %}
+
+
+
+
+
+    <form action="{% url 'pswms:add_waste' %}" method="POST">
+        {% csrf_token %}
+
+
+
+
+    <table  style="margin-top: 90px; margin-left: 140px; border-collapse: separate; border-spacing: 27px;" >
+        <tr>
+            <td>
+             <label style="font-size: 18px;">{{form.waste_type.label}}</label>   
+            </td>
+            <td>
+                {{form.waste_type}}
+            </td>
+        </tr>
+        <tr>
+            <td><label style="font-size: 18px;">{{form.waste_price.label}}</label> </td>
+            <td>{{form.waste_price}}</td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Add" class="btn btn-primary"/>
+                {% if form.errors %}
+                {% for field in form %}
+                {% for error in field.errors %}
+                <div class="alert alert-danger" id="form-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger" id="form-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% if success_msg %}
+                <p class="alt alert alert-success"  id="msg">{{success_msg}}</p>
+                {% endif %}
+                {% if error_msg %}
+                <p class="alt alert alert-danger" id="msg">{{error_msg}}</p>
+                {% endif %}
+            </td>
+          
+        </tr>
+        
+    </table>
+    {% if waste_list %}
+    <div class="pan-list">
+
+        <div class=pag>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sl.No</th>
+                        <th>Waste Type</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for waste in waste_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ waste.waste_type|capfirst }}</td>
+                        <td>{{waste.waste_price}}</td>
+
+                        <td><a href="{% url 'pswms:delete_waste' waste.waste_id %}" class="error-cls" style="color: red;">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example" class="nav-p">
+                <ul class="pagination">
+                    <li class="page-item">
+                        {% if waste_list.has_previous %}
+                        <a class="page-link" href="?page=waste_list.previous_page_number"
+                            aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                    {% for p in waste_list.paginator.page_range %}
+                    <li class="page-item "><a class="page-link" href="?page={{p}}">{{p}}</a></li>
+                    {% endfor %}
+                    <!-- <li class="page-item "> Page {{p}} of {{panchayath_list.paginator.page}}</li> -->
+                    <li class="page-item">
+                        {% if waste_list.has_next %}
+                        <a class="page-link" href="?page={{waste_list.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+
+
+        </div>
+        {% endif %}
+   
+</form>
+    
+
+<script>
+    $(document).ready(function(){
+        var form_err=document.getElementById('form-error')?document.getElementById('form-error').innerHTML:null;
+        var msg=document.getElementById('msg')?document.getElementById('msg').innerHTML:null;
+  $("input").focus(function(){
+    if(msg!=null)
+            {
+                
+                document.getElementById('msg').setAttribute("style", "display:none");
+            document.getElementById('msg').innerHTML = "";
+        }
+        if(form_err!=null)
+        {
+            document.getElementById('form-error').setAttribute("style", "display:none");
+        }
+   
+    
+    
+   
+  }
+  
+  
+  );
+
+ 
+  
+});
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'pswms/Users/UserMaster.html' %}
+
+{% block content %}
+
+<table class="table table-striped">
+    <tr>
+   <th class="table-danger"></th>
+   <th class="table-danger">Driver Name</th>
+   <th class="table-danger">Vehicle No</th>
+   <th class="table-danger">Contact No</th>
+   <th class="table-danger">Langauges</th>
+   <th class="table-danger">Qualification</th>
+    <th class="table-danger">Request date</th>
+</tr>
+{% for data in request_data %}
+<tr>
+    <td>
+        <img src="{{data.driver_id.driver_img.url}}" class="img-circle" height="50px"/>
+    </td>
+    <td>{{data.driver_id.driver_name}}</td>
+    <td>{{data.driver_id.driver_vehicle}}</td>
+    <td>{{data.driver_id.driver_phno}}</td>
+    <td>{{data.driver_id.driver_language}}</td>
+    <td>{{data.driver_id.driver_qualification}}</td>
+    <td>{{data.date}}</td>
+</tr>{% endfor %}
+</table>
+
+{% endblock %}

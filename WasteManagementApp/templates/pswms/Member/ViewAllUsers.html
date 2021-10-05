@@ -1,0 +1,83 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+
+{% block content %}
+{% if users %}
+
+<form action="{% url 'pswms:view_users' %}" method="POST">
+
+{% csrf_token %}
+<div class="col-md-12" style="margin-top: 50px; margin-left: 340px;">
+    <div><h2 style="font-family: Arial, Helvetica, sans-serif;"> <u>View Users</u> </h2></div>
+        </div><br><br>
+<div style="text-align: center;">
+{{form.user_name}}&nbsp;&nbsp;<input type="submit" value="Search"/>
+</div>
+
+<table class="table table-striped" style="margin-top: 20px; margin-left: 50px; ">
+
+<tr>
+    
+    <td class="table-danger"> 
+        <b> Name</b>
+    </td>
+    <td class="table-danger">
+        <b>Address</b>
+    </td>
+    
+    <td class="table-danger">
+        <b> D.O.B</b>
+    </td>
+    
+    <td class="table-danger">
+        <b> Phone. No</b>
+    </td>
+    <td class="table-danger">
+        <b>House No</b>
+    </td>
+    <td class="table-danger">
+        <b>Status</b>
+    </td>
+    <td class="table-danger">
+        <b> PDF</b>
+    </td>
+   <td class="table-danger">
+      <b> Manage</b>
+    </td>
+    <!-- <td>
+        Manage
+    </td> -->
+   
+</tr>
+{% for user in users %}
+<tr>
+    <td>{{user.user_name}}</td>
+    <td>{{user.user_address}}</td>
+    
+    <td>{{user.user_dob}}</td>
+   
+    <td>{{user.user_phno}}</td>
+    <td>{{user.user_house_no}}</td>
+    <td> {{user.user_status}}</td>
+    <td><a href="{% url 'pswms:pdf_user' user.user_id %}" style="color: red;">download</a></td>
+    <td><a href="{% url 'pswms:block_user' user.user_id %}" style="color: red;">Block</a></td>
+
+</tr>
+{% endfor %}
+
+
+</table>
+
+
+
+
+</form>
+
+
+{% else %}
+
+<p style="margin-top: 120px; margin-left: 220px;font-size: 30px; color: red;">No Data available</p>
+{% endif %}
+
+{% endblock %}

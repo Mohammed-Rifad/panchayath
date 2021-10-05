@@ -1,0 +1,50 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+
+{% block content %}
+
+<form action="{% url 'pswms:member_sign' %}" method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <table class ="font-lg  " style="border-spacing: 20px;  border-collapse: separate; margin-top: 80px; margin-left: 220px;">
+        <tr>
+            <td >Upload Signature</td>
+            <td>
+                <input type="file" name="sign" class="form-control" required/>
+            </td>
+
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="Submit" value="Upload" class="btn btn-primary"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>{% if success_msg %}
+                <p class="alert alert-success alt" id="msg">{{success_msg}}</p>
+                {% endif %}
+                {% if error_msg %}
+                <p class="alert alert-danger alt" id="msg">{{error_msg}}</p>
+                {% endif %}
+
+                {% if form.errors %}
+                {% for field in form %}
+                {% for error in field.errors %}
+                <div class="alert alert-danger" id="form-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger" id="form-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+                {% endif %}</td>
+        </tr>
+    </table>
+</form>    
+
+{% endblock %}

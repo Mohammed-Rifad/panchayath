@@ -1,0 +1,45 @@
+{% extends 'pswms/Users/UserMaster.html' %}
+
+
+{% block content %}
+
+
+<table style="margin-top: 20px; margin-left: 140px; border-collapse: separate; border-spacing: 15px;">
+<tr>
+    <form method='POST' action="{% url 'pswms:updateuser_profile' %}">
+        {% csrf_token %}
+   
+    <td>{{form.user_name.label}}</td>
+    <td>{{form.user_name}}</td>
+</tr>
+<tr>
+    <td>{{form.user_address.label}}</td>
+    <td>{{form.user_address}}</td>
+</tr>
+<!-- <tr>
+    <td>{{form.user_dob.label}}</td>
+    <td>{{form.user_dob}}</td>
+</tr> -->
+<tr>
+    <td>{{form.user_gender.label}}</td>
+    <td>{{form.user_gender}}</td>
+</tr>
+<tr>
+    <td>{{form.user_phno.label}}</td>
+    <td>{{form.user_phno}}</td>
+</tr>
+<tr>
+    <td>{{form.user_email.label}}</td>
+    <td>{{form.user_email}}</td>
+</tr>
+<!-- <tr>
+    <td>{{form.p_year.label}}</td>
+    <td>{{form.p_year}}</td>
+</tr> -->
+<tr>
+    <td></td>
+    <td><input type="submit" value="Update" class="btn btn-primary"/></td>
+</tr>
+</table>
+</form>
+{% endblock %}

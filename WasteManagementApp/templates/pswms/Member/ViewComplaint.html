@@ -1,0 +1,52 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+    {% block content %}
+    {% if complaints %}
+    <div class="col-md-10" style="margin-top: 50px; margin-left: 240px;">
+      <div><h2 style="font-family: Arial, Helvetica, sans-serif;"> <u>View Complaints</u> </h2></div>
+      
+      </div><br>
+      <br>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+          
+            
+            <th scope="col" class="table-warning">User Name</th>
+            <th scope="col" class="table-warning">Date</th>
+            <th scope="col" class="table-warning">Complaint</th>
+            <th class="table-warning">Action</th>
+            <!-- <th scope="col">Gender</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone No</th>
+            <th scope="col">Panchayath</th>
+            <th scope="col">Ward No</th> -->
+           
+          </tr>
+        </thead>
+        <tbody>
+            {% for complaint in complaints %}
+         <tr>
+            
+            
+           
+         
+           <td>{{complaint.user_id.user_name}}</td>
+           
+           <td>{{complaint.complaint_date}}</td>
+           <td>{{complaint.user_complaint}}</td>
+           <!-- <td>{{complaint.p_email}}</td>
+           <td>{{member.p_phno}}</td>
+           <td>{{member.pan_id.pan_name|capfirst}}</td>
+           <td>{{member.ward_no}}</td> -->
+           <td><a href="/pswms/MemberHome/Reply?user={{complaint.id}}"  style="color:blueviolet;">Reply</a></td>
+         </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+<h2 style="color: red;">No Data Available</h2>
+{% endif %}
+      {% endblock %}

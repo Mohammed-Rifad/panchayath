@@ -1,0 +1,154 @@
+{% extends 'pswms/SuperAdmin/AdminMaster.html' %}
+
+{% block content %}
+
+
+
+
+<form action="{% url 'pswms:admin_view_users' %}" method="POST" enctype="multipart/form-data" id="regform" data-ward-list="{% url 'pswms:get_ward' %}">
+
+{% csrf_token %}
+
+<table style="margin-top: 40px; margin-left: 140px; border-collapse: separate; border-spacing: 27px;">
+    <tr>
+        <td>Select Panchayath: </td><td> <select  name="panchayath" id='pan' style="height: 30px; width: 180px;" required>
+            <option disabled=true selected=true>-----------------</option>
+            {% for panchayath in panchayath_list %}
+            <option value={{panchayath.pan_id}}>{{panchayath.pan_name|capfirst}}</option>
+            {% endfor %}
+        </select></td>
+        <tr>
+        <td>Ward</td><td><select class="form-control" name="ward" id="ward" required>
+            
+
+        </select></td>
+    </tr>
+    <tr>
+        <td></td><td><input type="submit" value="View" class="btn btn-primary"></td>
+    </tr>
+    
+</table>
+
+
+
+
+
+
+
+<!-- 
+<div style="text-align: center;">
+{{form.user_name}}&nbsp;&nbsp;<input type="submit" value="Search"/>
+</div> -->
+
+{% if msg %}
+<h4 style="color: red; margin-left: 250px; margin-top: 40px;">No Data Found</h4>
+{% endif %}
+
+
+{% if users %}
+<table class="table table-striped" style="margin-top: 20px; margin-left: 40px; ">
+
+<tr>
+    <td class="table-warning"> 
+        Name
+    </td>
+    <td class="table-warning">
+        Address
+    </td>
+    
+    <td class="table-warning">
+        D.O.B
+    </td>
+    
+    <td class="table-warning">
+        Phone. No
+    </td>
+    <td class="table-warning"> 
+        House No
+    </td>
+    
+    <td class="table-warning">Status</td>
+<td class="table-warning">Pdf</td>
+   
+    <!-- <td></td> -->
+   
+</tr>
+{% for user in users %}
+<tr>
+    <td>{{user.user_name}}</td>
+    <td>{{user.user_address}}</td>
+    
+    <td>{{user.user_dob}}</td>
+   
+    <td>{{user.user_phno}}</td>
+    <td>{{user.user_house_no}}</td>
+    <td>{{user.user_status}}</td>
+    <td><a href="{% url 'pswms:pdf_admin_user' user.user_id %}"style="color: red;">Download Details</a></td>
+    <!-- <td><a href="{% url 'pswms:reject_user' user.user_id %}" style="color: red;">Delete</a></td> -->
+
+</tr>
+{% endfor %}
+
+
+</table>
+
+
+
+
+{% endif %}
+
+
+
+
+<script>
+    $(document).ready(function(){
+  $("input").focus(function(){
+   
+    document.getElementById('msg').innerHTML="";
+    
+   
+  }
+  
+  
+  );
+
+
+
+  $("#pan").change(function(){
+         
+    
+         const url = $("#regform").attr("data-ward-list");
+         
+         const panId = $(this).val(); 
+        
+
+         $.ajax({                      
+         url: url,                    
+         data: {
+             'pan_id': panId      
+         },
+         success: function (data) {   
+             $("#ward").html(data);
+            
+            
+         }
+     });
+
+
+     
+      
+       });
+  
+});
+</script>
+
+
+
+
+
+
+
+</form>
+
+
+{% endblock %}

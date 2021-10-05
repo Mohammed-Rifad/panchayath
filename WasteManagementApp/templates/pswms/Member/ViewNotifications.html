@@ -1,0 +1,45 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+    {% block content %}
+    {% if notification_list %}
+    <table class="table table-striped">
+        <thead>
+          <tr>
+          
+            <th scope="col">I.D</th>
+            <th scope="col">Date</th>
+            <th scope="col">Notification</th>
+            <!-- <th scope="col">Gender</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone No</th>
+            <th scope="col">Panchayath</th>
+            <th scope="col">Ward No</th> -->
+           
+          </tr>
+        </thead>
+        <tbody>
+            {% for notification in notification_list %}
+         <tr>
+            
+            
+           
+         
+           <td>{{notification.n_id}}</td>
+           
+           <td>{{notification.date}}</td>
+           <td>{{notification.notification|capfirst}}</td>
+           <!-- <td>{{notification.p_email}}</td>
+           <td>{{member.p_phno}}</td>
+           <td>{{member.pan_id.pan_name|capfirst}}</td>
+           <td>{{member.ward_no}}</td> -->
+           <td><a href="{% url 'pswms:view_notifications'  %}" ></a></td>
+         </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+<h2 style="color: red;">No Data Available</h2>
+{% endif %}
+      {% endblock %}

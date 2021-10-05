@@ -1,0 +1,132 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+
+{% block content %}
+<div class=row >
+<div class="col-md-12" style="margin-top: 10x; margin-left: 270px; font-family: 'Times New Roman', Times, serif ;font-size: large;"">
+    <img class="img img-circle" src={{img.url}} height="100px" width="100px"/>
+    <br/>
+    <br/>
+    <br/>
+    <table >
+       
+        <tr>
+        
+            <th>
+                Name  :
+            </th>
+            <td>
+                {{user_name}}
+            </td>
+    
+        </tr>
+        <tr>
+            <th>
+                Address :
+            </th>
+            <td>
+                {{address}}
+            </td>
+            
+        </tr>
+        <tr>
+            <th>
+                Phone No :
+            </th>
+            <td>
+                {{phno}}
+            </td>
+            
+        </tr>
+      </table>
+</div>
+<div class="col-md-12" style="margin-top: 50px; margin-left: 240px;">
+<div><h2 style="font-family: Arial, Helvetica, sans-serif;"> <u>Request Details</u> </h2></div>
+
+</div>
+
+<div class="col-md-12" style="margin-top:30px; margin-left: 20px; font-family: 'Times New Roman', Times, serif ;font-size: medium;">
+    <table class="table table-striped">
+        <tr>
+           
+            <td class="table-danger">
+                Waste Type
+            </td>
+            
+            <td class="table-danger">
+              Total Quantity
+            </td>
+            <td class="table-danger">
+                Price
+            </td>
+            <td class="table-danger">Payament Type</td>
+            <td class="table-danger">
+                Requested Date
+            </td>
+        </tr>
+        {% for data in requested_data %}
+        <tr>
+<td>
+{{data.waste_id.waste_type|capfirst}}
+</td>
+<td>
+    {{data.qty}} Kg
+</td>
+<td>
+   Rs {{data.total_price}}
+</td>
+<td>{{data.payment_type|capfirst}}</td>
+<td>
+    {{data.date}}
+</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="col-md-12" style="margin-top: 30px; margin-left: 300px;">
+    <form action="{% url 'pswms:request_details' %}" method="POST">
+        {% csrf_token %}
+    <table >
+        <tr>
+            <td style="font-family: Arial, Helvetica, sans-serif;">
+                Select Driver :
+            </td>
+            <td>
+                <select name="driver" class="form-control" required>
+                    {% for driver in drivers_list %}
+                     <option value={{driver.driver_id}}>
+                        {{driver.driver_name}}
+                     </option>
+                     {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                
+                <br>
+                 
+                <input type="submit" value="assign" class="btn btn-primary"/>
+          
+            </td>
+        </tr>
+    </table>
+</form>
+</div>
+
+</div>
+
+
+
+ 
+      
+
+
+
+{% endblock %}

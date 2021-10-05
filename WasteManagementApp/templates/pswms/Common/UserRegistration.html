@@ -1,0 +1,156 @@
+{% extends 'pswms/Common/CommonMaster.html' %}
+
+
+
+{% load static %}
+
+
+
+{% block content %}
+<script type="text/javascript" src="{% static 'Admin/assets/js/jquery/jquery.min.js' %}"></script>  
+    <form action="{% url 'pswms:user_reg' %}" method="POST" enctype="multipart/form-data" id="regform" data-ward-list="{% url 'pswms:get_ward' %}">
+        {% csrf_token %}
+            {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger" id="form-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+            <div class="alert alert-danger" id="form-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% if success_msg %}
+            <p class="alert alert-success alt" id="msg">{{success_msg}}</p>
+            {% endif %}
+            {% if error_msg %}
+            <p class="alert alert-danger alt" id="msg">{{error_msg}}</p>
+            {% endif %}
+        <h2> register</h2>
+		<p class="hint-text">Create your account.</p>
+        <div class="form-group">
+			<div class="row">
+				<div class="col-xs-6">{{form.first_name}}</div>
+				<div class="col-xs-6">{{form.last_name}}</div>
+			</div>        	
+        </div>
+		<div class="form-group">
+			<div class="row">
+				<div class="col-xs-6">{{form.user_address}}</div>
+				<div class="col-md-6">{{form.user_dob}}</div>
+			</div>        	
+        </div>
+        <div class="form-group">
+			<div class="row">
+				<div class="col-xs-6">{{form.user_gender}}</div>
+				<div class="col-md-6">{{form.user_phno}}</div>
+			</div>        	
+        </div>
+
+        <div class="form-group">
+			<div class="row">
+				<div class="col-xs-6">{{form.user_email}}</div>
+				<div class="col-md-6">{{form.user_house_no}}</div>
+			</div>        	
+        </div>
+        <div class="form-group">
+			<div class="row">
+                <div class="col-xs-6">
+				<select class="form-control" name="pan" id="pan">
+                    <option  selected=selected   disabled=true>Select Panchayath</option>
+                    {% for panchayath in panchayath_list %}
+                    <option value="{{panchayath.pan_id}}">{{panchayath.pan_name|capfirst}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-xs-6">
+				<select class="form-control" name="ward" id="ward">
+                    <option disabled=true selected=selected>Select ward</option>
+
+                </select>
+            </div>
+			</div>        	
+        </div>
+        <div class="form-group">
+			<div class="row">
+				<div class="col-xs-6">{{form.user_passwd}}</div>
+				<div class="col-md-6">{{form.confirm_passwd}}</div>{{password_error}}
+			</div>        	
+        </div>
+        <div class="form-group">
+			<div class="row">
+				<div class="col-xs-6">{{form.user_img}}</div>
+				
+			</div>        	
+        </div>
+
+    
+		<div class="form-group">
+		
+            <button type="submit" class="btn btn-success btn-lg btn-block">Register Now</button>
+        </div>
+        <div class="text-center">Already have an account? <a href="login.php">Sign in</a></div>
+   
+{% if success_msg %}
+<p style="color: green; " id="msg">{{success_msg}}</p>
+
+{% else %}
+<p style="color: red;" id="msg">{{error_msg}}</p>
+{% endif %}
+   
+  
+<!-- Required Jquery -->
+
+
+<script>
+    $(document).ready(function(){
+  $("input").focus(function(){
+   
+    document.getElementById('msg').innerHTML="";
+    
+   
+  }
+  
+  
+  );
+
+
+
+  $("#pan").change(function(){
+         
+    
+         const url = $("#regform").attr("data-ward-list");
+         
+         const panId = $(this).val(); 
+        
+
+         $.ajax({                      
+         url: url,                    
+         data: {
+             'pan_id': panId      
+         },
+         success: function (data) {   
+             $("#ward").html(data);
+            
+            
+         }
+     });
+
+
+     
+      
+       });
+  
+});
+</script>
+
+</form>
+
+
+
+
+{% endblock %}

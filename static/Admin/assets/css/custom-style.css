@@ -1,0 +1,63 @@
+
+#lbl{
+    font-size: 18px;
+}
+#my{
+    margin-top: 90px;
+     margin-left: 140px; 
+     border-collapse: separate; border-spacing: 27px; 
+}
+
+.error-cls{
+    color: red;
+  }
+#w-tb{
+   
+    margin-top: 90px;
+     margin-left: 140px; 
+     border-collapse: separate; 
+     border-spacing: 27px;
+}
+  .success-cls{
+      color: green;
+  }
+
+  .pan-list{
+    margin-top: 15px; 
+    margin-left: 60px;
+    
+  }
+
+.pag{
+    margin-top: 15px; margin-left: 90px;
+}
+
+.success{
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+.alt{
+   font-weight: bold;
+    
+}
+
+
+#p-reg{
+    margin-top: 60px; 
+    margin-left: 100px;
+}
+
+.nav-p{
+   margin-left:20px;
+}
+
+
+
+.pan-tb{
+   border-collapse: separate; 
+   border-spacing: 30px;
+   
+   width: 600px;
+}
+

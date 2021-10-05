@@ -1,0 +1,255 @@
+{% extends 'pswms/Users/UserMaster.html' %}
+
+
+{% block content %}
+<form method="POST" action="{% url 'pswms:waste_request' %}" style="margin-left: 60px;" id="regform" get-total-price="{% url 'pswms:get_price' %}">
+{% csrf_token %}
+<table style="border-spacing: 20px; border-collapse: separate;">
+    <tr>
+        <td>Waste Type</td><td><select class="form-control" name="waste" id="waste">
+            
+            {% for waste in waste_type %}
+            
+            <option value={{waste.waste_id}}>
+    {{waste.waste_type}}
+            </option>
+            {% endfor %}
+        </select></td>
+
+
+        
+    </tr>
+
+
+    <tr>
+        <td>Select Bin</td><td><select class="form-control" name="bin" id="bin">
+            
+            {% for bin in bin_list %}
+            
+            <option value={{bin.bin_id}}>
+    {{bin.bin_name}}
+            </option>
+            {% endfor %}
+        </select></td>
+
+
+        
+    </tr>
+
+
+    <tr>
+        <td>
+            {{form.qty.label}}
+        </td><td>
+            {{form.qty}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{form.total.label}}
+        </td><td>
+            {{form.total}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{form.payment_type.label}}
+        </td><td>
+            {{form.payment_type}}
+        </td>
+    </tr>
+</table>
+
+<input style="margin-left: 90px; width: 90px;" type="submit" value="ADD" class="btn btn-primary"/><strong id="msg"> {{success_msg}}{{error_msg}}</strong>
+</form>
+
+{% if form.errors %}
+{% for field in form %}
+{% for error in field.errors %}
+<div class="alert alert-danger" id="form-error">
+    <strong>{{ error|escape }}</strong>
+</div>
+{% endfor %}
+{% endfor %}
+{% for error in form.non_field_errors %}
+<div class="alert alert-danger" id="form-error">
+    <strong>{{ error|escape }}</strong>
+</div>
+{% endfor %}
+{% endif %}
+
+
+<div >
+    
+</div>
+
+{% if online %}
+
+
+
+<div style="margin-top: 60px; margin-left: 60px; border: 2px solid lightcyan;">
+    <p style="text-align: center; font-size: large; font-weight: bolder; color: lightseagreen; padding-top: 20px;">Enter Your Card Details Here!</p>
+   
+    <table style="border-spacing: 20px; border-collapse: separate; padding-left: 60px;" >
+    <tr>
+        <td>{{payment_form.card_holder.label}}</td><td>{{payment_form.card_holder}}</td>
+    </tr>
+    <tr>
+        <td>
+            {{payment_form.card_no.label}}
+        </td><td>
+            {{payment_form.card_no}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{payment_form.card_type.label}}
+        </td><td>
+            {{payment_form.card_type}}
+        </td>
+    </tr>
+    
+    <tr>
+        <td></td>
+        <td>
+            <div id="paypal-button"></div>
+        </td>
+    </tr>
+</table>
+   
+   
+</div>
+{% endif %}
+ <script src="https://www.paypalobjects.com/api/checkout.js"></script> 
+ <script src="https://www.paypal.com/sdk/js?client-id-ATUjID5RF_NL-XzG7zvSJAQCIVyLg9hS4JL0blFyIjyqEHkJ8D6KHZXkkngerIdaykfab1NXKYgYPK4P&currency=INR"></script> 
+ <script> 
+  paypal.Button.render({
+    // Configure environment
+    env: 'sandbox',
+    client: {
+      sandbox: 'demo_sandbox_client_id',
+      production: 'demo_production_client_id'
+    },
+    // Customize button (optional)
+    locale: 'en_US',
+    style: {
+      size: 'small',
+      color: 'gold',
+      shape: 'pill',
+    },
+
+    // Enable Pay Now checkout flow (optional)
+    commit: true,
+
+    // Set up a payment
+    payment: function(data, actions) {
+      return actions.payment.create({
+        transactions: [{
+          amount: {
+            total: document.getElementById("id_total").value,
+            currency: 'USD'
+          }
+        }]
+      });
+    },
+    // Execute the payment
+    onAuthorize: function(data, actions) {
+      return actions.payment.execute().then(function() {
+        // Show a confirmation message to the buyer
+        window.alert('Thank you for your purchase!');
+        window.location='http://127.0.0.1:8000/pswms/UserHome/WasteRequest?success=1';
+      });
+    }
+  }, '#paypal-button');
+
+</script> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $('#id_qty').focus(()=>{
+        document.getElementById("id_total").value=""
+        document.getElementById("#msg")?"":null
+
+    });
+$("#waste").change(function () {
+    // alert(parseInt((document.getElementById('id_total').value)* 0.01370.toString()))
+    const url = $("#regform").attr("get-total-price");
+
+    const waste_id=document.getElementById("waste").value
+    const qty=document.getElementById("id_qty").value
+if(qty>0)
+{    
+    $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+        data: {
+            'waste_id': waste_id,
+            'qty':   qty    // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+            
+            document.getElementById("id_total").value=data
+
+            
+          
+        }
+    });
+
+}
+else{
+    document.getElementById("id_total")?"":null
+}
+
+
+});
+
+
+$("#id_qty").blur(function () {
+
+const url = $("#regform").attr("get-total-price");
+
+const waste_id=document.getElementById("waste").value
+const qty=document.getElementById("id_qty").value
+if(qty>0)
+{    
+$.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+    data: {
+        'waste_id': waste_id,
+        'qty':   qty    // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+        
+        document.getElementById("id_total").value=data
+
+        
+      
+    }
+});
+
+}
+else{
+document.getElementById("id_total")?"":null
+}
+
+
+});
+</script>
+
+{% endblock %}

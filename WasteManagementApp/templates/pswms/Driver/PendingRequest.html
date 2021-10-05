@@ -1,0 +1,37 @@
+{% extends 'pswms/Driver/DriverMaster.html' %}
+
+
+{% block content %}
+
+
+<table class="table-striped table" style="margin-left: 20px;margin-top: 40px; border-spacing: 60px;">
+    <tr>
+        <td class="table-danger">
+            <b>Name</b> 
+        </td>
+        <td  class="table-danger">
+            <b>Date</b>
+        </td>
+        <td  class="table-danger">
+          
+        </td>
+    </tr>
+    {% for i in pending_request %}
+    <tr>
+<td>{{i.user_id.user_name}}</td>
+<td>{{i.date}}</td>
+
+<td  ><a href="/pswms/DriverHome/ViewWorkDetails?user={{i.user_id.user_id}}&date={{i.date|date:'Y-m-d'}}" >Details</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<!-- <ul>
+    {% for i in pickup_request %}
+    <li>{{i.user_id.user_name}}</li>
+    <li>{{i.date}}</li>
+    {% endfor %}
+</ul> -->
+
+{% endblock %}

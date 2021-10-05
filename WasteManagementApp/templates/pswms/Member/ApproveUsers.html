@@ -1,0 +1,79 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+
+{% block content %}
+{% if users %}
+
+<form action="{% url 'pswms:pending_users' %}" method="POST">
+
+{% csrf_token %}
+
+
+<div class="col-md-12" style="margin-top: 50px; margin-left: 240px;">
+    <div><h2 style="font-family: Arial, Helvetica, sans-serif;"> <u>User Approval</u> </h2></div>
+    
+    </div>
+    
+<table class="table table-striped" style="margin-top: 20px; margin-left: 0px; ">
+
+<tr>
+    <td class="table-danger">
+        Name
+    </td>
+    <td class="table-danger">
+        Address
+    </td>
+    
+    <td class="table-danger">
+        D.O.B
+    </td>
+    
+    <td class="table-danger">
+        Phone. No
+    </td>
+    <td class="table-danger">
+        House No
+    </td>
+    <td class="table-danger">
+        Panchayath
+    </td>
+    <td class="table-danger"> 
+        Ward No
+    </td>
+    <td class="table-danger"></td>
+    <td class="table-danger">ACTION</td>
+    <td class="table-danger"></td>
+</tr>
+{% for user in users %}
+<tr>
+    <td>{{user.user_name}}</td>
+    <td>{{user.user_address}}</td>
+    
+    <td>{{user.user_dob}}</td>
+   
+    <td>{{user.user_phno}}</td>
+    <td>{{user.user_house_no}}</td>
+    <td>{{user.user_pan.pan_name|capfirst}}</td>
+    <td>{{user.user_ward.ward_no}}</td>
+    <td><a href="{% url 'pswms:approve_user' user.user_id %}" style="color: green;">Approve</a></td>
+    <td><a href="{% url 'pswms:reject_user' user.user_id %}" style="color: red;">Reject</a></td>
+    <td><a href="{% url 'pswms:delete_users' user.user_id %}" style="color: red;">Delete</a></td>
+</tr>
+{% endfor %}
+
+
+</table>
+
+
+
+
+</form>
+
+
+{% else %}
+
+<p style="margin-top: 120px; margin-left: 220px;font-size: 30px; color: red;">No Data available</p>
+{% endif %}
+
+{% endblock %}

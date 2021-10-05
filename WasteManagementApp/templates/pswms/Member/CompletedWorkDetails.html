@@ -1,0 +1,44 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+{% block content %}
+
+<div class="col-md-12" style="margin-top: 50px; margin-left: 340px;">
+    <div><h2 style="font-family: Arial, Helvetica, sans-serif;"> <u>Completed Work Details</u> </h2></div>
+        </div>
+<table class="table-striped table" style="margin-left: 20px;margin-top: 40px; border-spacing: 60px;">
+    <tr>
+        <td class="table-info">
+            <b>Sl.no</b>
+        </td>
+        <td class="table-info">
+           <b>User Name</b> 
+        </td>
+        <td class="table-info">
+            <b>Date</b>
+        </td>
+        <td class="table-info">
+           <b>Status</b>
+        </td>
+    </tr>
+    {% for work in works %}
+    
+    <tr>
+        <td>{{forloop.counter}}</td>
+<td>{{work.user_id.user_name}}</td>
+<td>{{work.date}}</td>
+<td>{{work.status}}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+
+<!-- <ul>
+    {% for i in pickup_request %}
+    <li>{{i.user_id.user_name}}</li>
+    <li>{{i.date}}</li>
+    {% endfor %}
+</ul> -->
+
+{% endblock %}

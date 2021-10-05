@@ -1,0 +1,45 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+
+{% block content %}
+
+
+<table style="margin-top: 20px; margin-left: 140px; border-collapse: separate; border-spacing: 15px;">
+<tr>
+    <form method='POST' action="{% url 'pswms:update_profile' %}">
+        {% csrf_token %}
+   
+    <td>{{form.p_name.label}}</td>
+    <td>{{form.p_name}}</td>
+</tr>
+<tr>
+    <td>{{form.p_address.label}}</td>
+    <td>{{form.p_address}}</td>
+</tr>
+<tr>
+    <td>{{form.p_dob.label}}</td>
+    <td>{{form.p_dob}}</td>
+</tr>
+<tr>
+    <td>{{form.p_gender.label}}</td>
+    <td>{{form.p_gender}}</td>
+</tr>
+<tr>
+    <td>{{form.p_phno.label}}</td>
+    <td>{{form.p_phno}}</td>
+</tr>
+<tr>
+    <td>{{form.p_email.label}}</td>
+    <td>{{form.p_email}}</td>
+</tr>
+<tr>
+    <td>{{form.p_year.label}}</td>
+    <td>{{form.p_year}}</td>
+</tr>
+<tr>
+    <td></td>
+    <td><input type="submit" value="Update" class="btn btn-primary"/></td>
+</tr>
+</table>
+</form>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'pswms/Common/CommonMaster.html' %}
+{% load static %}
+{% block content %}
+<form action="{% url 'pswms:common_login' %}" method="POST">
+    {% csrf_token %}
+    <div style="text-align: center;margin-top: 90px;">
+    <table style="height: 200px;" cellspacing="10px">
+        <tr>
+           <td>{{form.user_name.label}} </td> 
+            <td>{{form.user_name}} </td>
+        </tr>
+        <tr>
+            <td>{{form.passwd.label}}</td> 
+             <td>{{form.passwd}}</td>
+         </tr>
+        <tr>
+            <td colspan="2"><input type="submit" class="button" name="forgotpassword"value="ForgotPassword?" formnovalidate></td>
+        </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                <input type="submit" class="btn btn-primary" value="Login"/> <strong style="color: red;" id="msg">{{msg}}</strong>  
+            </td>
+        </tr>
+        
+    </table>
+</div>
+  
+</form>
+
+
+
+<script>
+    $(document).ready(function(){
+  $("input").focus(function(){
+   
+    document.getElementById('msg').innerHTML="";
+    document.getElementById('id_ward_no').value="";
+    
+   
+  }
+  
+  
+  );
+
+ 
+  
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'pswms/Member/MemberMaster.html' %}
+
+{% block content %}
+
+<form action="{% url 'pswms:member_reply_user' %}" method="POST">
+  
+    <div style="margin-left:100px; margin-top: 60px;">{% csrf_token %}
+    
+    <br>
+    <br>
+    
+     
+    <label for="reply">Reply</label>
+    <textarea id="reply" name="reply" rows="4" cols="50"></textarea>
+    <br>
+  <input type="submit" value="Submit" class="btn btn-primary" style="background-color:navy ; color: white;"/>
+    
+</div>
+
+</form>
+{% if success_msg %}
+<p style="color: green; " id="msg">{{success_msg}}</p>
+
+{% else %}
+<p style="color: red;" id="msg">{{error_msg}}</p>
+{% endif %}
+  
+
+<script>
+    $(document).ready(function(){
+  $("input").focus(function(){
+   
+    document.getElementById('msg').innerHTML="";
+    
+    
+   
+  }
+  
+  
+  );
+
+ 
+  
+});
+</script>
+
+{% endblock %}

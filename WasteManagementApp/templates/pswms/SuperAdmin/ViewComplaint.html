@@ -1,0 +1,64 @@
+{% extends 'pswms/SuperAdmin/AdminMaster.html' %}
+
+
+    {% block content %}
+    {% if complaints %}
+    <div class="col-md-12" style="margin-top: 50px; margin-left: 240px;">
+      <div><h2 style="font-family: Arial, Helvetica, sans-serif;"> <u>Complaint Details</u> </h2></div>
+      
+      </div>
+      <br>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+          
+            
+            <th scope="col" class="table-danger">User Name</th>
+            <th scope="col" class="table-danger">Panchayath</th>
+            <th scope="col" class="table-danger">Ward</th>
+            <th scope="col" class="table-danger">Date</th>
+            <th scope="col" class="table-danger">Complaint</th>
+            <th scope="col" class="table-danger">Reply</th>
+            <th scope="col" class="table-danger">Action</th>
+            <!-- <th scope="col">Gender</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone No</th>
+            <th scope="col">Panchayath</th>
+            <th scope="col">Ward No</th> -->
+           
+          </tr>
+        </thead>
+        <tbody>
+            {% for complaint in complaints %}
+         <tr>
+            
+            
+           
+         
+           <td>{{complaint.user_id.user_name|capfirst}}</td>
+           <td>{{complaint.user_id.user_pan.pan_name|capfirst}}</td>
+           <td>{{complaint.user_id.user_ward.ward_no}}</td>
+           <td>{{complaint.complaint_date}}</td>
+           <td>{{complaint.user_complaint|capfirst}}</td>
+           <td>{{complaint.reply|capfirst}}</td>
+        <td>{{complaint.id}}
+           <!-- <td>{{complaint.p_email}}</td>
+           <td>{{member.p_phno}}</td>
+           <td>{{member.pan_id.pan_name|capfirst}}</td>
+           <td>{{member.ward_no}}</td> -->
+           
+           <td >
+             
+
+             <!-- <a href="/pswms/SuperHome/ReplyUser?id={{complaint.id}}" style="color:green;">Reply </a> -->
+             <a href="/pswms/SuperHome/ReplyUser?user={{complaint.id}}" style="color:green;">Reply </a>
+            </td>
+         </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+<h2 style="color: red;">No Data Available</h2>
+{% endif %}
+      {% endblock %}

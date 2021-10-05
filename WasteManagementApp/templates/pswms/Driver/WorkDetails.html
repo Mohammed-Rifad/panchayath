@@ -1,0 +1,156 @@
+{% extends 'pswms/Driver/DriverMaster.html' %}
+
+
+
+{% block content %}
+
+<div class=row>
+<div class="col-md-12" style="margin-top: 30px; margin-left: 0px;">
+    <table class="table table-striped">
+        <tr>
+            <th class="table-primary">
+                Name :
+            </th>
+            <td class="table-secondary">
+                {{user_name}}
+            </td>
+    
+        </tr>
+        <tr>
+            <th class="table-primary">
+                Address :
+            </th>
+            <td class="table-secondary">
+                {{address}}
+            </td>
+            
+        </tr>
+        <tr>
+            <th class="table-primary">
+                Phone No :
+            </th>
+            <td class="table-secondary">
+                {{phno}}
+            </td>   
+        </tr>
+      </table>
+</div>
+<div class="col-md-10" style="margin-top: 30px; margin-left: 90px;">
+<div><b>Waste Request</b></div>
+</div>
+<div class="col-md-10" style="margin-top: 40px; margin-left: 0px;">
+    <table class="table table-striped">
+        <tr>
+            <td class="table-primary">
+                <b>Type</b> 
+            </td>
+            
+            <td class="table-primary">
+              <b>Quantity</b> 
+            </td>
+            <td class="table-primary">
+               <b> Price</b>
+            </td>
+            <td class="table-primary"><b>Type</b> </td>
+            <td class="table-primary">
+                <b>Requested Date</b>
+            </td>
+        </tr>
+        {% for data in requested_data %}
+        <tr>
+<td>
+{{data.waste_id.waste_type}}
+</td>
+<td>
+    {{data.qty}} Kg
+</td>
+<td>
+   Rs {{data.total_price}}
+</td>
+<td>{{data.payment_type}}</td>
+<td>
+    {{data.date}}
+</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+<div class="col-md-10" style="margin-top: 40px; margin-left: 0px;"> 
+    <form action="{% url 'pswms:work_details' %}" method="POST">
+        {% csrf_token %}
+    <table class="table table-striped">
+        <tr>
+            <td class="table-secondary">
+                Update Status :
+            </td>
+            <td class="table-secondary">
+                <select name="status" id="status">
+                    
+                     <option value='completed'>
+                       Completed
+                     </option>
+                     <option value='delay'>
+                        Delay
+                      </option>
+                </select>
+            </td>
+            
+        </tr>
+        <tr >
+            <td class="table-secondary">Reason (if delay)</td>
+            <td>
+                <textarea id="reason" name="reason" cols=16 rows=3 readonly ></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="table-secondary">
+
+            </td>
+            <td class="table-secondary">
+                
+                 
+                <input type="submit" value="Update" id="update" />
+          
+            </td>
+        </tr>
+    </table>
+</form>
+</div> 
+
+</div>
+
+
+
+<script>
+   
+    $(document).ready(function(){
+       
+
+  $("#status").change(function(){
+     
+      if (document.getElementById('status').value=='delay'){
+        document.getElementById('reason').value=""
+      document.getElementById('reason').removeAttribute("readonly")
+      document.getElementById('reason').setAttribute("required","true")
+      }
+      if(document.getElementById('status').value=='completed'){
+        document.getElementById('reason').value=""
+      document.getElementById('reason').setAttribute("readonly","true");
+      document.getElementById('reason').setAttribute("required","true")
+      }
+  }
+  );
+
+ 
+  
+});
+</script>
+ 
+      
+
+
+
+{% endblock %}
